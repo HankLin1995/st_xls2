@@ -1,0 +1,8 @@
+# 忽略虚拟环境
+venv/
+etc/
+Lib/
+Scripts/
+share/
+
+*.cfg
