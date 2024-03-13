@@ -25,7 +25,7 @@ def Uchannel():
             fill_angle = st.number_input("填角 (M)", value=0.0)
             material = st.selectbox("材質", ["鋼筋混凝土", "其他"])
         with col2:
-            st.image('https://lh3.googleusercontent.com/proxy/kKbEeBDwVgbum6WsF5qTOA_3HN023HtD5oybFvPnfN0Rte3AMk7z_oWuai2obEAtHL0vtR1m9HxiKtjq-3MiLrA9DCIP2jyQIBpr12oEM5Y16zj7QC10fW56XyHMQ3W5ULWRxSSO5sk', caption='U型溝照片範例')
+            st.image('photos/images.jpg', caption='U型溝照片範例')
 
         # 表單提交按鈕
         submit_button = st.form_submit_button("計算",type="primary")
