@@ -1,45 +1,98 @@
-import pandas as pd
 import streamlit as st
-import openpyxl
-import os
 
-# Streamlit App
-def main():
-    st.title('Excel 平均值計算和下載')
+# 初始化或更新session_state以跟踪當前顯示的頁面
+if 'current_page' not in st.session_state:
+    st.session_state.current_page = ''
 
-    template_file = 'template/sample.xlsx'
+def NoselectPage():
+    st.header("	:dart:歡迎來到主頁面!")
+    st.write("請從	:point_right:**側邊欄**:point_left:選擇一個構造物名稱。")
+    st.session_state.current_page = 'NoselectPage'
 
-    workbook = openpyxl.load_workbook(template_file)
+def Uchannel():
+    st.header("	:bookmark_tabs: U型溝計算")
+# 創建一個表單
+    with st.form("input_form"):
+        st.write("**已知條件：**")
+        st.write("")
+        col1, col2 = st.columns(2)
 
-    # 取得第一個工作表
-    sheet = workbook.worksheets[0]
+        with col1:
+            q = st.number_input("計畫流量Q (CMS)", value=18.0)
+            n = st.number_input("糙率係數n", value=0.018)
+            s = st.number_input("渠道縱坡 s=1/", value=1000)
+            b = st.number_input("渠道寬度B (M)", value=6.0)
+            fill_angle = st.number_input("填角 (M)", value=0.0)
+            material = st.selectbox("材質", ["鋼筋混凝土", "其他"])
+        with col2:
+            st.image('https://lh3.googleusercontent.com/proxy/kKbEeBDwVgbum6WsF5qTOA_3HN023HtD5oybFvPnfN0Rte3AMk7z_oWuai2obEAtHL0vtR1m9HxiKtjq-3MiLrA9DCIP2jyQIBpr12oEM5Y16zj7QC10fW56XyHMQ3W5ULWRxSSO5sk', caption='U型溝照片範例')
 
-    # 設定 sheet 工作表 A2 儲存格內容為 "Test Excel"
-    sheet['A2'] = 'Test Excel.'
+        # 表單提交按鈕
+        submit_button = st.form_submit_button("計算",type="primary")
 
-    # 保存文件到临时目录
-    output_file = 'test.xlsx'
-    workbook.save(output_file)
+    if submit_button:
+        st.write("計畫流量Q:", q, "CMS")
+        st.write("糙率係數n:", n)
+        st.write("渠道縱坡 s=1/", s)
+        st.write("渠道寬度B:", b, "M")
+        st.write("填角:", fill_angle, "M")
+        st.write("材質:", material)
+            # 更新頁面狀態以保留在當前頁面
+        st.session_state.current_page = 'Uchannel'
 
-    # 提供下载链接给用户
-    st.write('点击下面的按钮下载处理后的 Excel 文件:')
-    with open(output_file, 'rb') as f:
-        bytes_data = f.read()
-    st.download_button(label='下载文件', data=bytes_data, file_name=output_file)
+def Tchannel():
+    st.subheader("梯型溝")
+    with st.form("my_form"):
+        col1, col2 = st.columns([1, 1])  # 两列，宽度比例为 1:1
+        with col1:
+            first_name = st.text_input("First Name2", key="first_name")
+        with col2:
+            last_name = st.text_input("Last Name2", key="last_name")
+        submit_button = st.form_submit_button("Submit")
+        if submit_button:
+            st.write("First Name:", first_name)
+            st.write("Last Name:", last_name)
+            # 更新頁面狀態以保留在當前頁面
+            st.session_state.current_page = 'Tchannel'
 
-with st.form("my_form"):
-    col1, col2 = st.columns([1, 1])  # 两列，宽度比例为 1:1
-    with col1:
-        first_name = st.text_input("First Name")
-    with col2:
-        last_name = st.text_input("Last Name")
-    
-    submit_button = st.form_submit_button("Submit")
+def Cchannel():
+    st.subheader("圓型溝")
+    with st.form("my_form"):
+        col1, col2 = st.columns([1, 1])  # 两列，宽度比例为 1:1
+        with col1:
+            first_name = st.text_input("First Name3", key="first_name")
+        with col2:
+            last_name = st.text_input("Last Name3", key="last_name")
+        submit_button = st.form_submit_button("Submit")
+        if submit_button:
+            st.write("First Name:", first_name)
+            st.write("Last Name:", last_name)
+            # 更新頁面狀態以保留在當前頁面
+            st.session_state.current_page = 'Cchannel'
+# 在側邊欄添加一個標題
+st.sidebar.title("	:balloon:水理計算系統")
+type=st.sidebar.selectbox("**選擇構造物**", ["明渠", "暗渠", "倒虹吸工"])
+st.sidebar.divider()
 
-if submit_button:
-    st.write("First Name:", first_name)
-    st.write("Last Name:", last_name)
+# 使用session_state來記住按下的按鈕
 
-# 启动应用
-if __name__ == "__main__":
-    main()
+if type=="明渠":
+
+    if st.sidebar.button(":one: U型溝"):
+        st.session_state.current_page = 'Uchannel'
+    if st.sidebar.button(":two: 梯形溝"):
+        st.session_state.current_page = 'Tchannel'
+    if st.sidebar.button(":three: 圓形溝"):
+        st.session_state.current_page = 'Cchannel'
+else:
+    st.session_state.current_page = 'NoselectPage'
+
+# 根據session_state中記錄的狀態顯示對應的頁面
+if st.session_state.current_page == 'Uchannel':
+    Uchannel()
+elif st.session_state.current_page == 'Tchannel':
+    Tchannel()
+elif st.session_state.current_page == 'Cchannel':
+    Cchannel()
+else:
+    NoselectPage()
