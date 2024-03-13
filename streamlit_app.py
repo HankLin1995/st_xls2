@@ -27,7 +27,18 @@ def main():
         bytes_data = f.read()
     st.download_button(label='下载文件', data=bytes_data, file_name=output_file)
 
+with st.form("my_form"):
+    col1, col2 = st.columns([1, 1])  # 两列，宽度比例为 1:1
+    with col1:
+        first_name = st.text_input("First Name")
+    with col2:
+        last_name = st.text_input("Last Name")
     
+    submit_button = st.form_submit_button("Submit")
+
+if submit_button:
+    st.write("First Name:", first_name)
+    st.write("Last Name:", last_name)
 
 # 启动应用
 if __name__ == "__main__":
