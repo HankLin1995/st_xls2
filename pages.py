@@ -49,8 +49,8 @@ def Tchannel():
         with col1:
             q = st.number_input("計畫流量Q (CMS)", value=20)
             n = st.number_input("糙率係數n", value=0.018)
-            s = st.number_input("渠道縱坡=1\:x", value=900)
-            m = st.number_input("側坡=1\:m", value=1.5)
+            s = st.number_input(r"渠道縱坡=1\:x", value=900)
+            m = st.number_input(r"側坡=1\:m", value=1.5)
 
         with col2:
             st.image('photos/images.jpg', caption='U型溝照片範例')
@@ -61,7 +61,7 @@ def Tchannel():
     if submit_button:
 
         st.write("最佳水利斷面條件為:")
-        st.latex(" b = 2y tan \\frac{\Theta}{2}")
+        st.latex(r" b = 2y tan \\frac{\Theta}{2}")
         st.latex("A =  \\frac{y}{2} (b+T)")
         st.write("計畫流量Q:", q, "CMS")
         st.write("糙率係數n:", n)

@@ -4,5 +4,6 @@ etc/
 Lib/
 Scripts/
 share/
+__pycache__
 
 *.cfg
