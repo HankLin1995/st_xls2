@@ -63,7 +63,8 @@ def Tchannel():
             m = st.number_input(r"側坡=1\:m", value=1.5)
 
         with col2:
-            st.image('st_xls2/photos/images.jpg', caption='U型溝照片範例')
+            # st.image('st_xls2/photos/images.jpg', caption='U型溝照片範例')
+             st.image('photos/images.jpg', caption='U型溝照片範例')
 
         # 表單提交按鈕
         submit_button = st.form_submit_button("計算",type="primary")
@@ -99,8 +100,8 @@ def steelsheetpile():
 
 
         with col2:
-            st.image('st_xls2/photos/St.jpg', caption='Fig1.懸臂式板樁範例')
-
+            # st.image('st_xls2/photos/St.jpg', caption='Fig1.懸臂式板樁範例')
+            st.image('photos/St.jpg', caption='Fig1.懸臂式板樁範例')
         # 表單提交按鈕
         submit_button = st.form_submit_button("計算",type="primary")
 
@@ -127,43 +128,82 @@ def steelsheetpile():
 
         #計算第一階段
 
-        st.write("#### 2.受力平衡計算")
+        st.write("#### 2.第一階段(上部)計算")
 
         st.write(stream_data("""(1) 假設 O 點為不動點，將擋土牆分為上下兩部分。下圖之牆後被動
                                 土壓力與牆前主動土壓力的差值，以一集中力 R 作用於上圖 O 點。
                                 \n(2) 對上圖之 O 點取彎矩平衡，取適當的彎矩安全係數 FS，可求得 d0；
-                                取水平力平衡，可得 R 值。
-                                \n(3) FS 大約等於 1.5。
-                                """))
+                                取水平力平衡，可得 R 值。"""))
 
-        st.latex("右側土壓力="+r"P_a = \frac{1}{2} \cdot \gamma \cdot (H + d_0) \cdot K_a")
-        st.latex("左側土壓力="+r"P_p = \frac{1}{2} \cdot \gamma  \cdot (d_0) \cdot K_p")
+        st.latex(r"P_A = \frac{1}{2} \cdot \gamma \cdot (H + d_0) \cdot K_a")
+        st.latex(r"P_p = \frac{1}{2} \cdot \gamma  \cdot (d_0) \cdot K_p")
+        st.latex(r"R = P_p- P_A")
 
-        st.write("**對上圖之 O 點取彎矩平衡。**")
+        st.write("**對上圖之 O 點取彎矩平衡，FS放置於右側彎矩。**")
 
         st.write("右側彎矩計算式=")
-        st.latex(r"M_r = \frac{1}{2} \cdot r \cdot (H + d_0) \cdot K_a \cdot \frac{(H + d_0)}{3}")      
+        st.latex(r"M_r = \frac{1}{2} \cdot r \cdot (H + d_0) \cdot K_a \cdot \frac{(H + d_0)}{3}")    
+
         st.write("左側彎矩計算式=")
         st.latex(r"M_l = \frac{1}{2} \cdot r \cdot d_0 \cdot K_p \cdot \frac{d_0}{3}")
 
-        st.write("給定安全係數=",FS)
-        st.latex(r"M_r = 1.5 \cdot M_l")        
 
         d0 = sp.Symbol('d0')
 
-        # 右侧彎矩和左侧彎矩的表达式
         Mr = (1/2) * r * (H + d0) * Ka * ((H + d0) / 3)
-        Ml = (1/2) * r * d0 * Kp * (d0 / 3)
-
-        # 彎矩平衡方程
-        equation = sp.Eq(FS * Ml, Mr)
+        Ml = (1/2) * r * d0 * Kp * (d0 / 3)        # 彎矩平衡方程
+        equation = sp.Eq(Ml, FS*Mr)
 
         # 解方程，得到d0
-        d0_solution = sp.solve(equation, d0)
+        d0_solutions = sp.solve(equation, d0)
+        # 筛选出正的解
+        positive_solutions = [sol.evalf() for sol in d0_solutions if sol.is_real and sol.evalf() > 0]
 
-        # 显示解
-        st.write("解出的d0：", d0_solution)
+        for sol in positive_solutions:
+            d0_sol=float(sol)
+            st.write("解出的d0：",  d0_sol,"M")
+
+        st.write("**對上圖取力平衡**")
+
+                # 代入 d0 的解到 P_A 和 P_p 的表达式中
+        P_A_value = (1/2) *r * (H + d0_sol) * Ka
+        P_p_value = (1/2) * r * (d0_sol) * Kp
+
+        # 计算 R
+        R_value = P_p_value - P_A_value
+
+        # 显示结果
+        st.write("計算得到的R值為:", R_value)
 
         #計算第二階段
+            
+        st.write("#### 3.第二階段(下部)計算")
+
+        st.write("**計算目的:至少須滿足  S>=R**")
+
+        st.write("根據經驗  D=1.1~1.2d0")
+
+        D1=1.1*d0
+        D2=1.2*d0
+
+        st.latex(r"P_{\text{Al}} = \frac{1}{2}(r \cdot d_0 \cdot K_a + r \cdot D \cdot K_a)(D - d_0)")
+        st.latex(r"P_{\text{pl}} = \frac{1}{2}(r \cdot (H + d_0) \cdot K_p + r \cdot (H + D) \cdot K_p))(D - d_0)")
+        st.latex(r"S = P_{\text{pl}}- P_{\text{Al}}")
+
+        st.write("a.當D1=1.1*d0=",1.1*d0_sol)
+
+        # 计算 D1 的值
+        D1_value = 1.1 * d0_sol
+
+        # 定义表达式
+        P_Al = (1/2) * (r * d0_sol * Ka + r * D1_value * Ka) * (D1_value - d0_sol)
+        P_pl = (1/2) * (r * (H + d0_sol) * Kp + r * (H + D1_value) * Kp) * (D1_value - d0_sol)
+
+        # 计算 S
+        S = P_pl - P_Al
+
+        # 显示结果
+        st.write("S=",S)
+
 
     st.session_state.current_page = 'steelsheetpile'
