@@ -108,7 +108,7 @@ def steelsheetpile():
     
     if submit_button:
 
-        st.write("#### 依據內政部建築物基礎構造設計規範(112年)")
+        st.write("#### 依據內政部建築物基礎構造設計規範(112年)-7.5.3")
 
         st.write("#### 1.基本參數")
         
@@ -176,11 +176,9 @@ def steelsheetpile():
         st.write("計算得到的R值為:", R_value)
 
         #計算第二階段
-            
+        st.divider()
         st.write("#### 3.第二階段(下部)計算")
-
         st.write("**計算目的:至少須滿足  S>=R**")
-
         st.write("根據經驗  D=1.1~1.2d0")
 
         D1=1.1*d0
@@ -223,7 +221,7 @@ def steelsheetpile():
         elif S2>=R_value:
 
             D=D2_value
-
+        st.divider()
         st.write("#### 4.計算成果")
         st.write("計算所得之H+D=",H+D,"M")
         st.write("建議採用懸臂式板樁長度為",math.ceil(H+D),"M")
