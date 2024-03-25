@@ -1,5 +1,5 @@
 import streamlit as st
-from pages import NoselectPage, Uchannel, Tchannel, Cchannel  # 導入各個頁面的模組
+from pages import NoselectPage, Uchannel, Tchannel, Cchannel,steelsheetpile  # 導入各個頁面的模組
 
 st.set_page_config(
     page_title="HYD Calculator",
@@ -14,7 +14,7 @@ if 'current_page' not in st.session_state:
 
 # 在側邊欄添加一個標題
 st.sidebar.title(":balloon:水理計算系統")
-type = st.sidebar.selectbox("**選擇構造物**", ["明渠", "暗渠", "倒虹吸工"])
+type = st.sidebar.selectbox("**選擇構造物**", ["明渠", "擋土設施","暗渠", "倒虹吸工"])
 st.sidebar.divider()
 
 # 使用 session_state 來記住按下的按鈕
@@ -25,6 +25,10 @@ if type == "明渠":
         st.session_state.current_page = 'Tchannel'
     if st.sidebar.button(":three: 圓形溝"):
         st.session_state.current_page = 'Cchannel'
+
+elif type=="擋土設施":
+    if st.sidebar.button(":one: 懸臂式板樁"):
+        st.session_state.current_page = 'steelsheetpile'
 else:
     st.session_state.current_page = 'NoselectPage'
 
@@ -35,5 +39,7 @@ elif st.session_state.current_page == 'Tchannel':
     Tchannel()
 elif st.session_state.current_page == 'Cchannel':
     Cchannel()
+elif st.session_state.current_page == 'steelsheetpile':
+    steelsheetpile()
 else:
     NoselectPage()
