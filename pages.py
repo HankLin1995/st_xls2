@@ -93,7 +93,7 @@ def steelsheetpile():
         col1, col2 = st.columns(2)
 
         with col1:
-            H = st.number_input("開挖深度(M)", value=5)
+            H = st.number_input("開挖深度(M)", value=5.0)
             r = st.number_input("土壤單位重", value=1.8,)
             phi = st.number_input("土壤安息角", value=30,help="常見為30~33")
             FS = st.number_input("安全係數", value=1.5,help="規範建議>=1.5")
