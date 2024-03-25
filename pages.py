@@ -135,23 +135,23 @@ def steelsheetpile():
                                 \n(2) 對上圖之 O 點取彎矩平衡，取適當的彎矩安全係數 FS，可求得 d0；
                                 取水平力平衡，可得 R 值。"""))
 
-        st.latex(r"P_A = \frac{1}{2} \cdot \gamma \cdot (H + d_0) \cdot K_a")
-        st.latex(r"P_p = \frac{1}{2} \cdot \gamma  \cdot (d_0) \cdot K_p")
+        st.latex(r"P_A = \frac{1}{2} \cdot \gamma \cdot (H + d_0)^2 \cdot K_a")
+        st.latex(r"P_p = \frac{1}{2} \cdot \gamma  \cdot (d_0)^2 \cdot K_p")
         st.latex(r"R = P_p- P_A")
 
         st.write("**對上圖之 O 點取彎矩平衡，FS放置於右側彎矩。**")
 
         st.write("右側彎矩計算式=")
-        st.latex(r"M_r = \frac{1}{2} \cdot r \cdot (H + d_0) \cdot K_a \cdot \frac{(H + d_0)}{3}")    
+        st.latex(r"M_r = \frac{1}{2} \cdot r \cdot (H + d_0)^2 \cdot K_a \cdot \frac{(H + d_0)}{3}")    
 
         st.write("左側彎矩計算式=")
-        st.latex(r"M_l = \frac{1}{2} \cdot r \cdot d_0 \cdot K_p \cdot \frac{d_0}{3}")
+        st.latex(r"M_l = \frac{1}{2} \cdot r \cdot d_0^2 \cdot K_p \cdot \frac{d_0}{3}")
 
 
         d0 = sp.Symbol('d0')
 
-        Mr = (1/2) * r * (H + d0) * Ka * ((H + d0) / 3)
-        Ml = (1/2) * r * d0 * Kp * (d0 / 3)        # 彎矩平衡方程
+        Mr = (1/2) * r * (H + d0)**2 * Ka * ((H + d0) / 3)
+        Ml = (1/2) * r * d0**2 * Kp * (d0 / 3)        # 彎矩平衡方程
         equation = sp.Eq(Ml, FS*Mr)
 
         # 解方程，得到d0
@@ -166,8 +166,8 @@ def steelsheetpile():
         st.write("**對上圖取力平衡**")
 
                 # 代入 d0 的解到 P_A 和 P_p 的表达式中
-        P_A_value = (1/2) *r * (H + d0_sol) * Ka
-        P_p_value = (1/2) * r * (d0_sol) * Kp
+        P_A_value = (1/2) *r * (H + d0_sol)**2 * Ka
+        P_p_value = (1/2) * r * (d0_sol)**2 * Kp
 
         # 计算 R
         R_value = P_p_value - P_A_value
@@ -200,10 +200,32 @@ def steelsheetpile():
         P_pl = (1/2) * (r * (H + d0_sol) * Kp + r * (H + D1_value) * Kp) * (D1_value - d0_sol)
 
         # 计算 S
-        S = P_pl - P_Al
+        S1 = P_pl - P_Al
+        st.write("S1=",S1)
+        st.write("a.當D2=1.2*d0=",1.2*d0_sol)
 
+        # 计算 D1 的值
+        D2_value = 1.2 * d0_sol
+
+        # 定义表达式
+        P_A2 = (1/2) * (r * d0_sol * Ka + r * D2_value * Ka) * (D2_value - d0_sol)
+        P_p2 = (1/2) * (r * (H + d0_sol) * Kp + r * (H + D2_value) * Kp) * (D2_value - d0_sol)
+
+        # 计算 S
+        S2 = P_p2 - P_A2
         # 显示结果
-        st.write("S=",S)
+        st.write("S2=",S2)
 
+        if S1>=R_value:
+            
+            D=D1_value
+        
+        elif S2>=R_value:
 
+            D=D2_value
+
+        st.write("#### 4.計算成果")
+        st.write("計算所得之H+D=",H+D,"M")
+        st.write("建議採用懸臂式板樁長度為",math.ceil(H+D),"M")
+        
     st.session_state.current_page = 'steelsheetpile'
