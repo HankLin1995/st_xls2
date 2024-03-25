@@ -224,6 +224,6 @@ def steelsheetpile():
         st.divider()
         st.write("#### 4.計算成果")
         st.write("計算所得之H+D=",H+D,"M")
-        st.write("建議採用懸臂式板樁長度為",math.ceil(H+D),"M")
+        st.write(" ### 建議採用懸臂式板樁長度為",math.ceil(H+D),"M")
         
     st.session_state.current_page = 'steelsheetpile'
