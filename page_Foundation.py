@@ -108,7 +108,7 @@ def SP():
         #說明開始
 
         # 读取 Markdown 文件内容
-        with open(".\md\SP.md", "r", encoding="utf-8") as file:
+        with open("./md/SP.md", "r", encoding="utf-8") as file:
             markdown_text = file.read()
 
         # 使用字符串格式化将变量值填充到 Markdown 文本中
