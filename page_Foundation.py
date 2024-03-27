@@ -3,6 +3,7 @@ from data_stream import stream_data  # 導入資料流模組
 import math
 import sympy as sp
 import numpy as np
+import openpyxl
 
 def calculate_active_pressure_coefficient(phi):
     Ka = (1 - math.sin(math.radians(phi))) / (1 + math.sin(math.radians(phi)))
@@ -32,7 +33,7 @@ def resolve_d0(Ka,Kp,H,FS,r):
 def resolve_D(d0_sol, r, H,R, Ka, Kp):
     i_value = None
     S_test_value = None
-    for i in np.arange(1.1, 1.21, 0.01):
+    for i in np.arange(1.1, 1.3, 0.01):
         D_test = i * d0_sol
         P_Al = (1/2) * (r * d0_sol * Ka + r * D_test * Ka) * (D_test - d0_sol)
         P_pl = (1/2) * (r * (H + d0_sol) * Kp + r * (H + D_test) * Kp) * (D_test - d0_sol)
@@ -43,6 +44,23 @@ def resolve_D(d0_sol, r, H,R, Ka, Kp):
             break
     return i_value, S_test_value
 
+def exportXLS(H,phi,FS,Ka,Kp):
+    # 打开 Excel 文件
+    workbook = openpyxl.load_workbook('./template/SP.xlsx')
+
+    # 选择要操作的工作表
+    sheet = workbook.active
+
+    # 将数字写入指定单元格，例如将数字 123 写入第一行第一列的单元格
+    sheet.cell(row=12, column=3).value = H
+    sheet.cell(row=13, column=3).value = phi
+    sheet.cell(row=14, column=3).value = FS
+    sheet.cell(row=16, column=5).value = Ka
+    sheet.cell(row=19, column=5).value = Kp
+
+    # 保存更改
+    workbook.save('example.xlsx')
+    
 
 def SP():
     st.header(":memo: 懸臂式板樁")
@@ -85,6 +103,8 @@ def SP():
 
         D=i_value*d0_sol
 
+        st.toast(":heavy_check_mark: 建議採用SP為"+str(math.ceil(H + D)) +"M")
+
         #說明開始
 
         # 读取 Markdown 文件内容
@@ -105,75 +125,46 @@ def SP():
             H_D_ceil=math.ceil(H + D)
         )
 
-
-        st.write(" #### 一、計算依據")
-        url = "https://www.nlma.gov.tw/filesys/file/EMMA/L1120811.pdf"
-        st.write(":clipboard:內政部建築物基礎構造設計規範(112年)--7.5.3")
-        st.write(":link:點我查看[PDF](%s)" % url)
+        st.toast(":speech_balloon: 開始列出計算流程")
 
         # 在 Streamlit 中呈现 Markdown 内容
         st.markdown(markdown_text)
 
-        # st.divider()
-        # st.write("#### 2.基本參數")
-        
-        # st.latex(r"\phi = " + str(phi) + r"^\circ")
+        # conName=st.text_input("請輸入工程名稱")
+        # conLoc=st.text_input("請輸入工程地點")
 
-        # st.write("主動土壓力係數（Ka）的計算公式如下：")
-        # st.latex(r"K_a = \frac{{1 - \sin(\phi)}}{{1 + \sin(\phi)}}")
-        # st.write("Ka=", Ka)
+        st.toast(":file_folder: 文件下載已準備完成!")
 
-        # st.write("被動土壓力係數（Kp）的計算公式如下：")
-        # st.latex(r"K_p = \frac{{1 + \sin(\phi)}}{{1 - \sin(\phi)}}")
-        # st.write("Kp=", Kp)
+        workbook = openpyxl.load_workbook('./template/SP.xlsx')
 
-        # st.divider()
+        # 选择要操作的工作表
+        sheet = workbook.active
 
-        # #計算第一階段
+        # 将数字写入指定单元格，例如将数字 123 写入第一行第一列的单元格
+        # sheet.cell(row=3, column=3).value = conName
+        # sheet.cell(row=4, column=3).value = conLoc
+        sheet.cell(row=12, column=3).value = H
+        sheet.cell(row=13, column=3).value = phi
+        sheet.cell(row=14, column=3).value = FS
+        sheet.cell(row=16, column=5).value = Ka
+        sheet.cell(row=19, column=5).value = Kp
 
-        # st.write("#### 3.第一階段(上部)計算")
+        sheet.cell(row=36, column=3).value = d0_sol
+        sheet.cell(row=40, column=3).value = R_value
+        sheet.cell(row=51, column=2).value = i_value
+        sheet.cell(row=51, column=4).value = S_test_value
+        sheet.cell(row=56, column=4).value = H+D
+        sheet.cell(row=58, column=5).value = math.ceil(H + D)
 
-        # st.write("""(1) 假設 O 點為不動點，將擋土牆分為上下兩部分。下圖之牆後被動
-        #                         土壓力與牆前主動土壓力的差值，以一集中力 R 作用於上圖 O 點。
-        #                         \n(2) 對上圖之 O 點取彎矩平衡，取適當的彎矩安全係數 FS，可求得 d0；
-        #                         取水平力平衡，可得 R 值。""")
+        # 保存更改
+        # workbook.save('example.xlsx')
+        output_file = 'example.xlsx'
+        workbook.save(output_file)
 
-        # st.latex(r"P_A = \frac{1}{2} \cdot \gamma \cdot (H + d_0)^2 \cdot K_a")
-        # st.latex(r"P_p = \frac{1}{2} \cdot \gamma  \cdot (d_0)^2 \cdot K_p")
-        # st.latex(r"R = P_p- P_A")
-
-        # st.write("**對上圖之 O 點取彎矩平衡，FS=抵抗彎矩(Mp)/驅動彎矩(MA)。**")
-
-        # st.latex(r"L_a=\frac{(H + d_0)}{3}")
-        # st.latex(r"L_p=\frac{d_0}{3}")
-
-        # st.latex(r"M_A = P_A \cdot L_a= \frac{1}{2} \cdot r \cdot (H + d_0)^2 \cdot K_a \cdot \frac{(H + d_0)}{3}......\tag{1}")    
-        # st.latex(r"M_p =P_p \cdot L_p= \frac{1}{2} \cdot r \cdot d_0^2 \cdot K_p \cdot \frac{d_0}{3}")
-        # st.latex(r"FS=M_p/M_A"+",FS大約等於1.5")
-
-        # st.write("解出的d0：",  d0_sol,"M")
-        # st.write("**對上圖取力平衡**")
-
-        # # 显示结果
-        # st.write("計算得到的R值為:", R_value)
-
-        # #計算第二階段
-        # st.divider()
-        # st.write("#### 4.第二階段(下部)計算")
-        # st.write("**計算目的:至少須滿足  S>=R**")
-        # st.write("根據經驗  D=1.1~1.2d0")
-
-        # st.latex(r"P_{\text{Al}} = \frac{1}{2}(r \cdot d_0 \cdot K_a + r \cdot D \cdot K_a)(D - d_0)")
-        # st.latex(r"P_{\text{pl}} = \frac{1}{2}(r \cdot (H + d_0) \cdot K_p + r \cdot (H + D) \cdot K_p))(D - d_0)")
-        # st.latex(r"S = P_{\text{pl}}- P_{\text{Al}}")
-
-        # st.write("當i=",round(i_value,2),"時，S=",S_test_value)
-        # st.write("此時滿足  S>=R，則D=", i_value*d0_sol)
-
-        # st.divider()
-        # st.write("#### 5.計算成果")
-        # st.write("計算所得之H+D=",H+D,"M")
-        # st.write(" ##### :heavy_check_mark: 建議採用懸臂式板樁長度為",math.ceil(H+D),"M")
-        st.session_state.current_page = 'SP'
-        
+        # 提供下载链接给用户
+        st.write('点击下面的按钮下载处理后的 Excel 文件:')
+        with open(output_file, 'rb') as f:
+            bytes_data = f.read()
+        st.download_button(label='計算成果下載', data=bytes_data, file_name=output_file)
+            
     st.session_state.current_page = 'SP'

@@ -1,3 +1,8 @@
+
+#### 一、計算依據
+
+:link:[內政部建築物基礎構造設計規範(112年)--7.5.3]("https://www.nlma.gov.tw/filesys/file/EMMA/L1120811.pdf")
+
 #### 二.基本參數設定
 
 φ = {phi}°
@@ -72,4 +77,4 @@ $$ S = P_{{pl}}- P_{{Al}} $$
 
 計算所得之H+D={H_D}M
 
-#### 建議採用懸臂式板樁長度為 *{H_D_ceil}* M
+#### :heavy_check_mark: 建議採用懸臂式板樁長度為 *{H_D_ceil}* M
