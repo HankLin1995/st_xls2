@@ -1,5 +1,11 @@
 import streamlit as st
-from pages import NoselectPage, Uchannel, Tchannel, Cchannel,steelsheetpile  # 導入各個頁面的模組
+from pages import  Uchannel  # 導入各個頁面的模組
+from page_Foundation import SP
+
+def NoselectPage():
+    st.header(":dart:歡迎來到主頁面!")
+    st.write("請從:point_right:**側邊欄**:point_left:選擇一個構造物名稱。")
+    st.session_state.current_page = 'NoselectPage'
 
 st.set_page_config(
     page_title="HYD Calculator",
@@ -19,27 +25,20 @@ st.sidebar.divider()
 
 # 使用 session_state 來記住按下的按鈕
 if type == "明渠":
+    st.session_state.current_page = 'NoselectPage'
     if st.sidebar.button(":one: U型溝"):
         st.session_state.current_page = 'Uchannel'
-    if st.sidebar.button(":two: 梯形溝"):
-        st.session_state.current_page = 'Tchannel'
-    if st.sidebar.button(":three: 圓形溝"):
-        st.session_state.current_page = 'Cchannel'
-
 elif type=="擋土設施":
+    # st.session_state.current_page = 'NoselectPage'
     if st.sidebar.button(":one: 懸臂式板樁"):
-        st.session_state.current_page = 'steelsheetpile'
+        st.session_state.current_page = 'SP'
 else:
     st.session_state.current_page = 'NoselectPage'
 
 # 根據 session_state 中記錄的狀態顯示對應的頁面
 if st.session_state.current_page == 'Uchannel':
     Uchannel()
-elif st.session_state.current_page == 'Tchannel':
-    Tchannel()
-elif st.session_state.current_page == 'Cchannel':
-    Cchannel()
-elif st.session_state.current_page == 'steelsheetpile':
-    steelsheetpile()
+elif st.session_state.current_page == 'SP':
+    SP()
 else:
     NoselectPage()
