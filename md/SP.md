@@ -78,3 +78,5 @@ $$ S = P_{{pl}}- P_{{Al}} $$
 計算所得之H+D={H_D}M
 
 #### :heavy_check_mark: 建議採用懸臂式板樁長度為 *{H_D_ceil}* M
+
+---

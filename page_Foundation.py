@@ -4,6 +4,7 @@ import math
 import sympy as sp
 import numpy as np
 import openpyxl
+import os
 
 def calculate_active_pressure_coefficient(phi):
     Ka = (1 - math.sin(math.radians(phi))) / (1 + math.sin(math.radians(phi)))
@@ -130,9 +131,6 @@ def SP():
         # 在 Streamlit 中呈现 Markdown 内容
         st.markdown(markdown_text)
 
-        # conName=st.text_input("請輸入工程名稱")
-        # conLoc=st.text_input("請輸入工程地點")
-
         st.toast(":file_folder: 文件下載已準備完成!")
 
         workbook = openpyxl.load_workbook('./template/SP.xlsx')
@@ -141,8 +139,9 @@ def SP():
         sheet = workbook.active
 
         # 将数字写入指定单元格，例如将数字 123 写入第一行第一列的单元格
-        # sheet.cell(row=3, column=3).value = conName
-        # sheet.cell(row=4, column=3).value = conLoc
+        sheet.cell(row=1, column=1).value = st.session_state['company']
+        sheet.cell(row=3, column=3).value = st.session_state['conName']
+        sheet.cell(row=4, column=3).value = st.session_state['conLoc']
         sheet.cell(row=12, column=3).value = H
         sheet.cell(row=13, column=3).value = phi
         sheet.cell(row=14, column=3).value = FS
@@ -153,6 +152,7 @@ def SP():
         sheet.cell(row=40, column=3).value = R_value
         sheet.cell(row=51, column=2).value = i_value
         sheet.cell(row=51, column=4).value = S_test_value
+        sheet.cell(row=52,column=4).value=D
         sheet.cell(row=56, column=4).value = H+D
         sheet.cell(row=58, column=5).value = math.ceil(H + D)
 
@@ -162,9 +162,11 @@ def SP():
         workbook.save(output_file)
 
         # 提供下载链接给用户
-        st.write('点击下面的按钮下载处理后的 Excel 文件:')
+
         with open(output_file, 'rb') as f:
             bytes_data = f.read()
-        st.download_button(label='計算成果下載', data=bytes_data, file_name=output_file)
+        st.download_button(label='計算成果下載', data=bytes_data, file_name=output_file,type='primary')
+
+        os.remove(output_file)
             
     st.session_state.current_page = 'SP'
