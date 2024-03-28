@@ -6,12 +6,13 @@ from page_Foundation import SP
 
 def NoselectPage():
     st.header(":dart:歡迎來到主頁面!")
-    st.write("請從:point_right:**側邊欄**:point_left:選擇一個構造物名稱。")
-    st.info("作者: HankLin")
-    # 使用 st.write 函數來設置超連結的樣式
-    st.markdown("""
-        <a href="https://hankvba.blogspot.com/" target="_blank" style="display: inline-block; background-color: #ffcccc; color: black; padding: 5px 20px; border-radius: 5px; text-decoration: none;">部落格</a>
-    """, unsafe_allow_html=True)
+    st.write(" #### 使用說明:")
+    st.write(":one: 請從:point_right:**側邊欄**:point_left:選擇一個構造物名稱。")
+    st.write(":two: 選擇計算項目後顯示計算畫面")
+    st.write(":three:計算前可先填寫工程資訊")
+    st.write(":four:輸入基本參數後點選計算")
+    st.write(":red[規範內容引用有錯誤再煩請指教更正。]")
+    st.info(" **作者:** HankLin\n\n **部落格:** https://hankvba.blogspot.com/")
     st.session_state.current_page = 'NoselectPage'
 
 st.set_page_config(
