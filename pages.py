@@ -3,18 +3,18 @@ from data_stream import stream_data  # 導入資料流模組
 import math
 import sympy as sp
 
-def calculate_active_pressure_coefficient(phi):
-    Ka = (1 - math.sin(math.radians(phi))) / (1 + math.sin(math.radians(phi)))
-    return Ka
+# def calculate_active_pressure_coefficient(phi):
+#     Ka = (1 - math.sin(math.radians(phi))) / (1 + math.sin(math.radians(phi)))
+#     return Ka
 
-def calculate_passive_pressure_coefficient(phi):
-    Kp = (1 + math.sin(math.radians(phi))) / (1 - math.sin(math.radians(phi)))
-    return Kp
+# def calculate_passive_pressure_coefficient(phi):
+#     Kp = (1 + math.sin(math.radians(phi))) / (1 - math.sin(math.radians(phi)))
+#     return Kp
 
-def NoselectPage():
-    st.header(":dart:歡迎來到主頁面!")
-    st.write("請從:point_right:**側邊欄**:point_left:選擇一個構造物名稱。")
-    st.session_state.current_page = 'NoselectPage'
+# def NoselectPage():
+#     st.header(":dart:歡迎來到主頁面!")
+#     st.write("請從:point_right:**側邊欄**:point_left:選擇一個構造物名稱。")
+#     st.session_state.current_page = 'NoselectPage'
 
 def Uchannel():
     st.header(":bookmark_tabs: U型溝計算")
@@ -39,6 +39,7 @@ def Uchannel():
 
 
     if submit_button:
+
         st.write("計畫流量Q:", q, "CMS")
         st.write("糙率係數n:", n)
         st.write("渠道縱坡 s=1/", s)

@@ -32,6 +32,8 @@ if 'conName' not in st.session_state:
 if 'conLoc' not in st.session_state:
     st.session_state['conLoc'] = ''
 
+# st.write(st.session_state)
+
 # 在側邊欄添加一個標題
 st.sidebar.title(":sweat_drops: 雲端計算系統")
 # st.sidebar.info("作者:**HankLin**")
@@ -45,7 +47,7 @@ st.sidebar.write("	:page_facing_up: 計算項目")
 
 # 使用 session_state 來記住按下的按鈕
 if type == "明渠":
-    st.session_state.current_page = 'NoselectPage'
+    # st.session_state.current_page = 'NoselectPage'
     if st.sidebar.button(" :small_blue_diamond: U型溝"):
         st.session_state.current_page = 'Uchannel'
 elif type=="擋土設施":
@@ -64,6 +66,8 @@ with st.sidebar.expander("**:department_store: 工程資訊**"):
     st.text_input(":small_orange_diamond: 公司名稱",value="雲林管理處", key="company")
     st.text_input(":small_orange_diamond: 工程名稱", key="conName")
     st.text_input(":small_orange_diamond: 工程地點", key="conLoc")
+
+st.sidebar.write(st.session_state)
 
 # 根據 session_state 中記錄的狀態顯示對應的頁面
 if st.session_state.current_page == 'Uchannel':
