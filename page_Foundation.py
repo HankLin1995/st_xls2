@@ -142,6 +142,7 @@ def SP():
         sheet.cell(row=1, column=1).value = st.session_state['company']
         sheet.cell(row=3, column=3).value = st.session_state['conName']
         sheet.cell(row=4, column=3).value = st.session_state['conLoc']
+        
         sheet.cell(row=12, column=3).value = H
         sheet.cell(row=13, column=3).value = phi
         sheet.cell(row=14, column=3).value = FS
