@@ -15,8 +15,8 @@ def Uchannel():
             q = st.number_input("計畫流量Q (CMS)", value=18.0)
             n = st.number_input("糙率係數n", value=0.0180, format="%.3f")
             s = st.number_input("渠道縱坡 s=1/", value=1000)
-            b = st.number_input("渠道寬度B (M)", value=6.0)
-            fill_angle = st.number_input("填角 (M)", value=0.0)
+            b = st.number_input("渠寬W (M)", value=6.0)
+            fill_angle = st.number_input("填角F (M)", value=0.0)
             # material = st.selectbox("材質", ["鋼筋混凝土", "其他"])
         with col2:
             st.image('photos/images.jpg', caption='U型溝照片範例')
@@ -30,8 +30,8 @@ def Uchannel():
         st.write("計畫流量Q:", q, "CMS")
         st.write("糙率係數n:", n)
         st.write("渠道縱坡 s=1/", s)
-        st.write("渠道寬度B:", b, "M")
-        st.write("填角:", fill_angle, "M")
+        st.write("渠道寬度W:", b, "M")
+        st.write("填角F:", fill_angle, "M")
         # st.write("材質:", material)
         
     st.session_state.current_page = 'Uchannel'
