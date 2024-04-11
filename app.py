@@ -1,5 +1,5 @@
 import streamlit as st
-from pages import  Uchannel  # 導入各個頁面的模組
+from page_OpenChannel import  Uchannel  # 導入各個頁面的模組
 from page_Foundation import SP # 導入各個頁面的模組
 
 st.set_page_config(
@@ -29,7 +29,7 @@ def NoselectPage():
 
 #------側邊欄設置內容------
 
-st.sidebar.write(st.session_state)
+# st.sidebar.write(st.session_state)
 
 st.sidebar.title(":sweat_drops: 雲端計算系統")
 st.sidebar.info("作者:**HankLin**")

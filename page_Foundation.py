@@ -44,23 +44,6 @@ def resolve_D(d0_sol, r, H,R, Ka, Kp):
             S_test_value = S_test
             break
     return i_value, S_test_value
-
-def exportXLS(H,phi,FS,Ka,Kp):
-    # 打开 Excel 文件
-    workbook = openpyxl.load_workbook('./template/SP.xlsx')
-
-    # 选择要操作的工作表
-    sheet = workbook.active
-
-    # 将数字写入指定单元格，例如将数字 123 写入第一行第一列的单元格
-    sheet.cell(row=12, column=3).value = H
-    sheet.cell(row=13, column=3).value = phi
-    sheet.cell(row=14, column=3).value = FS
-    sheet.cell(row=16, column=5).value = Ka
-    sheet.cell(row=19, column=5).value = Kp
-
-    # 保存更改
-    workbook.save('example.xlsx')
     
 
 def SP():
@@ -106,13 +89,11 @@ def SP():
 
         st.toast(":heavy_check_mark: 建議採用SP為"+str(math.ceil(H + D)) +"M")
 
-        #說明開始
+        #----說明開始----
 
-        # 读取 Markdown 文件内容
         with open("./md/SP.md", "r", encoding="utf-8") as file:
             markdown_text = file.read()
 
-        # 使用字符串格式化将变量值填充到 Markdown 文本中
         markdown_text = markdown_text.format(
             phi=phi,
             Ka=Ka,
@@ -133,9 +114,10 @@ def SP():
 
         st.toast(":file_folder: 文件下載已準備完成!")
 
+        #----Excel報表內容填寫----
+
         workbook = openpyxl.load_workbook('./template/SP.xlsx')
 
-        # 选择要操作的工作表
         sheet = workbook.active
 
         # 将数字写入指定单元格，例如将数字 123 写入第一行第一列的单元格
@@ -157,8 +139,6 @@ def SP():
         sheet.cell(row=56, column=4).value = H+D
         sheet.cell(row=58, column=5).value = math.ceil(H + D)
 
-        # 保存更改
-        # workbook.save('example.xlsx')
         output_file = 'example.xlsx'
         workbook.save(output_file)
 
