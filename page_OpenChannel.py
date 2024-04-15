@@ -13,7 +13,7 @@ def Uchannel():
 
         with col1:
             q = st.number_input("計畫流量q (cms)", value=18.0)
-            n = st.number_input("糙率係數n", value=0.0180, format="%.3f")
+            n = st.number_input("曼寧係數n", value=0.0180, format="%.3f")
             s = st.number_input("渠道縱坡 s=1/", value=1000)
             b = st.number_input("渠寬b (m)", value=6.0)
             fill_angle = st.number_input("填角F (m)", value=0.0)
@@ -74,20 +74,61 @@ def Uchannel():
         Vc=Q/(yc_sol*b)
         st.write("Vc =" ,Vc,"m/s")
 
-        #---檢查結果---#
-
-        ## 最小流速
-        
-        ## 最大流速
-
-        ## 出水高度
-
-        #---報表填寫---#
+        #---過程描述---#
 
         with open("./md/U.md", "r", encoding="utf-8") as file:
             markdown_text = file.read()
 
-        # 在 Streamlit 中呈现 Markdown 内容
+        markdown_text = markdown_text.format(
+            q=q,
+            n=n,
+            B=b,
+            F=fill_angle,
+            s=s,
+            y=round(y,3),
+            Q=round(Q,3),
+            V=round(V,3),
+            Fr=round(Fr,3),
+            yc=round(yc_sol,3),
+            Vc=round(Vc,3),
+            Wall=1
+
+        )
+
         st.markdown(markdown_text)
+
+
+        #---計算檢核---#
+        err_state=False
+        if V>0.7:
+            st.write(":white_check_mark:最小容許流速 " )
+        else:
+            st.write('	:x:最小容許流速請再檢討')
+            err_state=True
+
+        if V<3:
+            st.write(":white_check_mark:最大容許流速(農工手冊) " )
+        elif V<4:
+            st.write(":white_check_mark:最大容許流速(合訂本)) " )
+        else:
+            st.write('	:x:最大容許流速請再檢討')
+            err_state=True
+
+        if V<0.66*Vc:
+            st.write(":white_check_mark:避免臨界流速(農工手冊)" )
+        elif V<0.8*Vc:
+            st.write(":white_check_mark:避免臨界流速(合訂本) " )
+        else:
+            st.write('	:x:臨界流速請再檢討')
+            err_state=True
+
+        Fb=max(1/3*y,0.15)
+
+        y_ans=round(y+Fb,3)
+
+        if err_state==False:
+            st.info("建議採用牆高至少為 " + str(y_ans) + " M",icon="✔️")
+
+
 
     st.session_state.current_page = 'Uchannel'

@@ -42,8 +42,7 @@ type = st.sidebar.selectbox( ">>",["明渠", "擋土設施","暗渠", "倒虹吸
 if type == "明渠":
     if st.sidebar.button(" :small_blue_diamond: U型溝"):
         st.session_state.current_page = 'Uchannel'
-    if st.sidebar.button(" :small_blue_diamond: T型溝"):
-        st.session_state.current_page = 'Uchannel'
+
 elif type=="擋土設施":
     if st.sidebar.button(" :small_blue_diamond:  懸臂式板樁"):
         st.session_state.current_page = 'SP'
