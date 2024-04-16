@@ -31,7 +31,7 @@ $$ A = b \cdot y -  F ^2 $$
 
 $$ R = \frac{{A}}{{P}} $$
 
-$$ V = \frac{{1}}{{n}} \cdot R^\frac{{2}}{{3}} \cdot \sqrt \frac{{1}}{{s}} $$
+$$ V = \frac{{1}}{{n}} \cdot R^\frac{{2}}{{3}} \cdot s ^ \frac{{1}}{{2}} $$
 
 $$ Q = A \cdot V $$
 
