@@ -1,5 +1,5 @@
 import streamlit as st
-from page_OpenChannel import  Uchannel  # 導入各個頁面的模組
+from page_OpenChannel import  Uchannel_FixB,Uchannel_FixY  # 導入各個頁面的模組
 from page_Foundation import SP # 導入各個頁面的模組
 
 st.set_page_config(
@@ -40,9 +40,10 @@ st.sidebar.write(":books: 構造物名稱")
 type = st.sidebar.selectbox( ">>",["明渠", "擋土設施","暗渠", "倒虹吸工"])
 
 if type == "明渠":
-    if st.sidebar.button(" :small_blue_diamond: U型溝"):
-        st.session_state.current_page = 'Uchannel'
-
+    if st.sidebar.button(" :small_blue_diamond: U型溝(固定寬度)"):
+        st.session_state.current_page = 'Uchannel_FixB'
+    if st.sidebar.button(" :small_blue_diamond: U型溝(固定水深)"):
+        st.session_state.current_page = 'Uchannel_FixY'
 elif type=="擋土設施":
     if st.sidebar.button(" :small_blue_diamond:  懸臂式板樁"):
         st.session_state.current_page = 'SP'
@@ -54,14 +55,16 @@ st.sidebar.divider()
 with st.sidebar.expander("**:department_store: 報表設定**"):
 
     st.markdown("---")
-    st.text_input(":small_orange_diamond: 公司名稱", key="company") #加入key之後就會變成session_state
+    st.text_input(":small_orange_diamond: 公司名稱",value="[輸入你的公司名稱]",key="company") #加入key之後就會變成session_state
     st.text_input(":small_orange_diamond: 工程名稱", key="conName")
     st.text_input(":small_orange_diamond: 工程地點", key="conLoc")
 
 #------主要計算項目------
 
-if st.session_state.current_page == 'Uchannel':
-    Uchannel()
+if st.session_state.current_page == 'Uchannel_FixB':
+    Uchannel_FixB()
+elif st.session_state.current_page == 'Uchannel_FixY':
+    Uchannel_FixY()
 elif st.session_state.current_page == 'SP':
     SP()
 else:
