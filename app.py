@@ -24,7 +24,7 @@ def NoselectPage():
     :red[規範內容引用有錯誤再煩請指教更正]\n
     """)
 
-    st.info(" **作者:** HankLin\n\n **部落格:** https://hankvba.blogspot.com/")
+    st.info(" **作者:** HankLin\n\n **部落格:** https://www.hanksvba.com")
     st.session_state.current_page = 'NoselectPage'
 
 #------側邊欄設置內容------
