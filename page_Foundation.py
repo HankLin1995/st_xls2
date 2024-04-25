@@ -66,7 +66,7 @@ def SP():
             st.image('photos/St.jpg', caption='Fig1.懸臂式板樁範例')
         # 表單提交按鈕
         submit_button = st.form_submit_button("計算",type="primary")
-        st.info("特別感謝張韋珹技師協助校稿!")
+        st.info("特別感謝張技師協助校稿!")
 
     
     if submit_button:
